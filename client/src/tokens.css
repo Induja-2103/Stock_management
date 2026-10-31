@@ -1,0 +1,547 @@
+/* ==========================================================================
+   THE DIGITAL LEDGER BOOK — DESIGN TOKENS & BASE STYLING
+   ========================================================================== */
+
+:root {
+  /* Paper & Ink Palette */
+  --paper-bg: #f6f1e7;
+  --paper-card: #fcf9f2;
+  --paper-card-highlight: #fffefb;
+  --paper-rule: rgba(29, 27, 22, 0.08);
+  --paper-rule-strong: rgba(29, 27, 22, 0.18);
+  --ink-primary: #1d1b16;
+  --ink-secondary: #575249;
+  --ink-muted: #827b70;
+  --ink-faint: #b3aba0;
+
+  /* Book Spine & Binding */
+  --spine-bg: #14221c;
+  --spine-active: #1d332b;
+  --spine-border: #0a130f;
+  --spine-text: #e1d8c8;
+  --spine-gold: #c2a661;
+  --spine-gold-faint: rgba(194, 166, 97, 0.25);
+
+  /* Signature Accents */
+  --accent-green: #1f5f4a;
+  --accent-green-tint: #eaf3ef;
+  --accent-green-dark: #144334;
+  --stamp-red: #b3261e;
+  --stamp-red-tint: #faeceb;
+  --stamp-red-border: #e28a86;
+  --stamp-amber: #b45309;
+  --stamp-amber-tint: #fef7ea;
+  --stamp-amber-border: #f4cf8c;
+
+  /* Rubber Stamp Colors */
+  --stamp-receipt: #1f5f4a; /* Forest ink */
+  --stamp-issue: #3f4948;   /* Slate ink */
+  --stamp-output: #235363;  /* Petrol ink */
+  --stamp-sale: #2a3b5c;    /* Deep navy ink */
+  --stamp-return: #784c28;  /* Warm amber-brown ink */
+  --stamp-scrap: #b3261e;   /* Alert vermilion ink */
+
+  /* Typography */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  /* Ruled line height */
+  --rule-height: 38px;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--paper-bg);
+  color: var(--ink-primary);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  /* Subtle CSS-only paper grain simulation */
+  background-image: 
+    radial-gradient(rgba(29, 27, 22, 0.03) 1px, transparent 1px),
+    linear-gradient(to right, rgba(29, 27, 22, 0.015) 1px, transparent 1px);
+  background-size: 24px 24px, 48px 48px;
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Headings with serif character */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--ink-primary);
+  letter-spacing: -0.02em;
+}
+
+/* Double rule below main titles */
+.title-double-rule {
+  border-bottom: 3px double var(--ink-primary);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+/* Tabular Number Class */
+.tabular-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Book Binding Layout Container */
+.book-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Left Book Spine */
+.book-spine {
+  width: 220px;
+  min-width: 220px;
+  background-color: var(--spine-bg);
+  border-right: 3px solid var(--spine-border);
+  box-shadow: inset -6px 0 16px rgba(0, 0, 0, 0.4), 4px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 50;
+  user-select: none;
+}
+
+/* Spine Header / Book Title */
+.spine-header {
+  padding: 28px 20px 20px;
+  border-bottom: 1px dashed var(--spine-gold-faint);
+}
+
+.spine-title {
+  font-family: var(--font-serif);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--spine-gold);
+  line-height: 1.25;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.spine-subtitle {
+  font-size: 11px;
+  font-family: var(--font-sans);
+  color: var(--spine-text);
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-top: 6px;
+}
+
+/* Stitched Seam along Spine */
+.spine-stitch {
+  border-right: 1px dashed var(--spine-gold-faint);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  width: 1px;
+  pointer-events: none;
+}
+
+/* Spine Navigation Tabs */
+.spine-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  gap: 6px;
+  flex: 1;
+}
+
+.spine-tab {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: var(--spine-text);
+  text-decoration: none;
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease-in-out;
+  position: relative;
+}
+
+.spine-tab:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.spine-tab.active {
+  background-color: var(--spine-active);
+  color: var(--spine-gold);
+  border-left: 3px solid var(--spine-gold);
+  font-weight: 600;
+}
+
+.spine-tab-roman {
+  font-family: var(--font-serif);
+  font-size: 12px;
+  color: var(--spine-gold);
+  opacity: 0.75;
+  min-width: 22px;
+}
+
+/* Spine Footer / Volume stamp */
+.spine-footer {
+  padding: 16px 20px;
+  border-top: 1px dashed var(--spine-gold-faint);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--spine-text);
+  opacity: 0.6;
+}
+
+/* Ledger Paper Page Canvas */
+.ledger-page {
+  flex: 1;
+  padding: 36px 44px 80px;
+  max-width: 1300px;
+  margin: 0 auto;
+  width: calc(100% - 220px);
+}
+
+@media (max-width: 900px) {
+  .book-layout {
+    flex-direction: column;
+  }
+  .book-spine {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .spine-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+  }
+  .ledger-page {
+    width: 100%;
+    padding: 24px 18px 60px;
+  }
+}
+
+/* Ruled Paper Table Styling */
+.ruled-table-wrap {
+  background-color: var(--paper-card);
+  border: 1px solid var(--paper-rule-strong);
+  box-shadow: 2px 2px 8px rgba(29, 27, 22, 0.04);
+  overflow-x: auto;
+  border-radius: 2px;
+}
+
+.ruled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent calc(var(--rule-height) - 1px),
+    var(--paper-rule) calc(var(--rule-height) - 1px),
+    var(--paper-rule) var(--rule-height)
+  );
+  background-size: 100% var(--rule-height);
+}
+
+.ruled-table th {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-secondary);
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--ink-primary);
+  background-color: var(--paper-card);
+  white-space: nowrap;
+}
+
+.ruled-table td {
+  padding: 9px 14px;
+  color: var(--ink-primary);
+  height: var(--rule-height);
+  vertical-align: middle;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.ruled-table tr:hover td {
+  background-color: rgba(31, 95, 74, 0.03);
+}
+
+/* Red Margin Mark for ripple affected rows */
+.ruled-table tr.ripple-affected td:first-child {
+  border-left: 4px solid var(--stamp-red);
+  background-color: var(--stamp-red-tint);
+}
+
+/* Ink-In Animation for newly rendered rows */
+@keyframes inkIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-ink-in {
+  animation: inkIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* General Paper Card Container */
+.paper-box {
+  background: var(--paper-card);
+  border: 1px solid var(--paper-rule-strong);
+  box-shadow: 1px 2px 6px rgba(29, 27, 22, 0.04);
+  padding: 24px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+
+.paper-box-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--paper-rule-strong);
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Forms in Vintage Ledger Style */
+.ledger-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-secondary);
+  margin-bottom: 6px;
+}
+
+.ledger-input, .ledger-select {
+  width: 100%;
+  padding: 9px 12px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--ink-primary);
+  background-color: #ffffff;
+  border: 1px solid var(--paper-rule-strong);
+  border-radius: 2px;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.ledger-input:focus, .ledger-select:focus {
+  outline: none;
+  border-color: var(--accent-green);
+  box-shadow: 0 0 0 2px var(--accent-green-tint);
+}
+
+.ledger-input.mono, .ledger-select.mono {
+  font-family: var(--font-mono);
+}
+
+/* Buttons in Ledger Style */
+.ledger-btn {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease-in-out;
+}
+
+.ledger-btn-primary {
+  background-color: var(--accent-green);
+  color: #ffffff;
+}
+
+.ledger-btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-green-dark);
+}
+
+.ledger-btn-secondary {
+  background-color: transparent;
+  color: var(--ink-primary);
+  border-color: var(--paper-rule-strong);
+}
+
+.ledger-btn-secondary:hover:not(:disabled) {
+  background-color: var(--paper-card);
+  border-color: var(--ink-secondary);
+}
+
+.ledger-btn-danger {
+  background-color: var(--stamp-red);
+  color: #ffffff;
+}
+
+.ledger-btn-danger:hover:not(:disabled) {
+  background-color: #8f1d16;
+}
+
+.ledger-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Notice & Warning Ribbons */
+.ledger-ribbon-warn {
+  background-color: var(--stamp-amber-tint);
+  border-left: 4px solid var(--stamp-amber);
+  border-top: 1px solid var(--stamp-amber-border);
+  border-right: 1px solid var(--stamp-amber-border);
+  border-bottom: 1px solid var(--stamp-amber-border);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  color: var(--stamp-amber);
+}
+
+.ledger-ribbon-error {
+  background-color: var(--stamp-red-tint);
+  border-left: 4px solid var(--stamp-red);
+  border-top: 1px solid var(--stamp-red-border);
+  border-right: 1px solid var(--stamp-red-border);
+  border-bottom: 1px solid var(--stamp-red-border);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  color: var(--stamp-red);
+}
+
+.ledger-ribbon-success {
+  background-color: var(--accent-green-tint);
+  border-left: 4px solid var(--accent-green);
+  border-top: 1px solid #a8d5c6;
+  border-right: 1px solid #a8d5c6;
+  border-bottom: 1px solid #a8d5c6;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 13.5px;
+  color: var(--accent-green-dark);
+}
+
+/* Receipt Upload & Preview Component */
+.receipt-upload-zone {
+  border: 2px dashed var(--paper-rule-strong);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  padding: 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.receipt-upload-zone:hover, .receipt-upload-zone.dragover {
+  border-color: var(--accent-green);
+  background-color: rgba(31, 95, 74, 0.04);
+}
+
+.receipt-preview-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border: 1px solid var(--paper-rule-strong);
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+.receipt-thumb {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--paper-rule-strong);
+}
+
+/* Modal Backdrop & Dialog */
+.ledger-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(20, 34, 28, 0.65);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.ledger-modal-dialog {
+  background-color: var(--paper-card);
+  border: 2px solid var(--ink-primary);
+  box-shadow: 4px 6px 20px rgba(0, 0, 0, 0.25);
+  border-radius: 3px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ledger-modal-header {
+  padding: 16px 20px;
+  border-bottom: 2px solid var(--ink-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--paper-card-highlight);
+}
+
+.ledger-modal-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+

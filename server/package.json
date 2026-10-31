@@ -1,0 +1,28 @@
+{
+  "name": "stock-movement-server",
+  "version": "1.0.0",
+  "description": "Stock management and inventory valuation backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "init-db": "node init-db.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9"
+  },
+  "jest": {
+    "rootDir": ".",
+    "testMatch": [
+      "<rootDir>/tests/**/*.test.js"
+    ]
+  }
+}
+
